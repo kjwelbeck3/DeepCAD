@@ -117,6 +117,13 @@ class SketchBase(object):
 ####################### loop & profile #######################
 class Loop(SketchBase):
     """Sketch loop, a sequence of connected curves."""
+
+    # @staticmethod
+    # def from_ae_dict(profcurves):
+    #     all_curves = [construct_curve_from_dict(item) for item in profcurves]
+    #     this_loop = Loop(all_curves)
+
+
     @staticmethod
     def from_dict(stat):
         all_curves = [construct_curve_from_dict(item) for item in stat['profile_curves']]
@@ -211,6 +218,12 @@ class Loop(SketchBase):
 class Profile(SketchBase):
     """Sketch profile，a closed region formed by one or more loops. 
     The outer-most loop is placed at first."""
+
+    @staticmethod
+    def from_ae_dict(ae_ent):
+        all_loops = [Loop.from_dict(item) for item in ae_ent["loops"]]
+        return Profile(all_loops) 
+
     @staticmethod
     def from_dict(stat):
         all_loops = [Loop.from_dict(item) for item in stat['loops']]

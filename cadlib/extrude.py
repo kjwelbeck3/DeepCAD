@@ -101,6 +101,45 @@ class Extrude(object):
         self.sketch_size = sketch_size
 
     @staticmethod
+    def from_ae_dict(ae_ent, sketch_dim=256):
+        """construct Extrude from json data
+
+        Args:
+            ae_ent (dict): all json data pertaining to a single extrusion
+            sketch_dim (int, optional): sketch normalization size. Defaults to 256.
+
+        Returns:
+            list: one or more Extrude instances
+
+            Extrude(self, profile: Profile, sketch_plane: CoordSystem,operation, extent_type, extent_one, extent_two, sketch_pos, sketch_size)
+        """
+
+        all_skets = []
+        n = len(ae_ent["loops"])
+        sket_profile = Profile.from_ae_dict(ae_ent)
+        sket_plane = CoordSystem.from_dict(ae_ent["transform"])
+
+        # normalize profile
+        point = sket_profile.start_point
+        sket_pos = point[0] * sket_plane.x_axis + point[1] * sket_plane.y_axis + sket_plane.origin
+        sket_size = sket_profile.bbox_size
+        sket_profile.normalize(sketch_dim)
+
+        operation = EXTRUDE_OPERATIONS.index(ae_ent["operation"])
+        extent_type = EXTENT_TYPE.index(ae_ent["extent_type"])
+        extent_one = ae_ent["extent_one"]
+        extent_two = 0.0
+        if ae_ent["extent_type"] == "TwoSidesFeatureExtentType":
+            extent_two = ae_ent["extent_two"]
+
+        # if operation == EXTRUDE_OPERATIONS.index("NewBodyFeatureOperation"):
+        #     all_operations = [operation] + [EXTRUDE_OPERATIONS.index("JoinFeatureOperation")] * (n - 1)
+        # else:
+        #     all_operations = [operation] * n
+        
+        return Extrude(sket_profile, sket_plane, operation, extent_type, extent_one, extent_two, sket_pos, sket_size)
+
+    @staticmethod
     def from_dict(all_stat, extrude_id, sketch_dim=256):
         """construct Extrude from json data
 
@@ -231,6 +270,20 @@ class CADSequence(object):
     def __init__(self, extrude_seq, bbox=None):
         self.seq = extrude_seq
         self.bbox = bbox
+
+    @staticmethod
+    def from_ae_dict(all_stat):
+        """construct CADSequence from ae json data"""
+        seq = []
+        for item in all_stat["entities"]:
+            extrude_ops = Extrude.from_ae_dict(item)
+            seq.extend([extrude_ops])
+        # bbox_info = all_stat["properties"]["bounding_box"]
+        # max_point = np.array([bbox_info["max_point"]["x"], bbox_info["max_point"]["y"], bbox_info["max_point"]["z"]])
+        # min_point = np.array([bbox_info["min_point"]["x"], bbox_info["min_point"]["y"], bbox_info["min_point"]["z"]])
+        # bbox = np.stack([max_point, min_point], axis=0)
+        return CADSequence(seq)
+
 
     @staticmethod
     def from_dict(all_stat):

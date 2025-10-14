@@ -1,0 +1,356 @@
+{
+  "entities": [
+    {
+      "transform": {
+        "origin": {
+          "y": 0.0,
+          "x": 0.0,
+          "z": 0.04
+        },
+        "y_axis": {
+          "y": 1.0,
+          "x": 0.0,
+          "z": 0.0
+        },
+        "x_axis": {
+          "y": 0.0,
+          "x": 1.0,
+          "z": 0.0
+        },
+        "z_axis": {
+          "y": 0.0,
+          "x": 0.0,
+          "z": 1.0
+        }
+      },
+      "operation": "CutFeatureOperation",
+      "extent_type": "OneSideFeatureExtentType",
+      "loops": [
+        {
+          "profile_curves": [
+            {
+              "start_point": {
+                "y": -0.0375,
+                "x": 0.0375,
+                "z": 0.0
+              },
+              "type": "Line3D",
+              "end_point": {
+                "y": -0.0375,
+                "x": -0.0375,
+                "z": 0.0
+              }
+            },
+            {
+              "start_point": {
+                "y": -0.0375,
+                "x": -0.0375,
+                "z": 0.0
+              },
+              "type": "Line3D",
+              "end_point": {
+                "y": 0.0375,
+                "x": -0.0375,
+                "z": 0.0
+              }
+            },
+            {
+              "start_point": {
+                "y": 0.0375,
+                "x": 0.0375,
+                "z": 0.0
+              },
+              "type": "Line3D",
+              "end_point": {
+                "y": 0.0375,
+                "x": -0.0375,
+                "z": 0.0
+              }
+            },
+            {
+              "start_point": {
+                "y": -0.0375,
+                "x": 0.0375,
+                "z": 0.0
+              },
+              "type": "Line3D",
+              "end_point": {
+                "y": 0.0375,
+                "x": 0.0375,
+                "z": 0.0
+              }
+            }
+          ],
+          "is_outer": true
+        }
+      ],
+      "extent_one": -0.001,
+      "extent_two": 0.0,
+      "group": 2
+    },
+    {
+      "transform": {
+        "origin": {
+          "y": 0.0,
+          "x": 0.0,
+          "z": 0.04
+        },
+        "y_axis": {
+          "y": 1.0,
+          "x": 0.0,
+          "z": 0.0
+        },
+        "x_axis": {
+          "y": 0.0,
+          "x": 1.0,
+          "z": 0.0
+        },
+        "z_axis": {
+          "y": 0.0,
+          "x": 0.0,
+          "z": 1.0
+        }
+      },
+      "operation": "CutFeatureOperation",
+      "extent_type": "OneSideFeatureExtentType",
+      "loops": [
+        {
+          "profile_curves": [
+            {
+              "start_point": {
+                "y": 0.0525,
+                "x": 0.0625,
+                "z": 0.0
+              },
+              "type": "Line3D",
+              "end_point": {
+                "y": 0.0525,
+                "x": -0.0625,
+                "z": 0.0
+              }
+            },
+            {
+              "start_point": {
+                "y": 0.0525,
+                "x": -0.0625,
+                "z": 0.0
+              },
+              "type": "Line3D",
+              "end_point": {
+                "y": -0.0525,
+                "x": -0.0625,
+                "z": 0.0
+              }
+            },
+            {
+              "start_point": {
+                "y": -0.0525,
+                "x": 0.0625,
+                "z": 0.0
+              },
+              "type": "Line3D",
+              "end_point": {
+                "y": -0.0525,
+                "x": -0.0625,
+                "z": 0.0
+              }
+            },
+            {
+              "start_point": {
+                "y": 0.0525,
+                "x": 0.0625,
+                "z": 0.0
+              },
+              "type": "Line3D",
+              "end_point": {
+                "y": -0.0525,
+                "x": 0.0625,
+                "z": 0.0
+              }
+            }
+          ],
+          "is_outer": true
+        }
+      ],
+      "extent_one": -0.001,
+      "extent_two": 0.0,
+      "group": 2
+    },
+    {
+      "transform": {
+        "origin": {
+          "y": 0.0,
+          "x": 0.0,
+          "z": 0.04
+        },
+        "y_axis": {
+          "y": 1.0,
+          "x": 0.0,
+          "z": 0.0
+        },
+        "x_axis": {
+          "y": 0.0,
+          "x": 1.0,
+          "z": 0.0
+        },
+        "z_axis": {
+          "y": 0.0,
+          "x": 0.0,
+          "z": 1.0
+        }
+      },
+      "operation": "CutFeatureOperation",
+      "extent_type": "OneSideFeatureExtentType",
+      "loops": [
+        {
+          "profile_curves": [
+            {
+              "start_point": {
+                "y": -0.0375,
+                "x": 0.0375,
+                "z": 0.0
+              },
+              "type": "Line3D",
+              "end_point": {
+                "y": -0.0375,
+                "x": -0.0375,
+                "z": 0.0
+              }
+            },
+            {
+              "start_point": {
+                "y": -0.0375,
+                "x": -0.0375,
+                "z": 0.0
+              },
+              "type": "Line3D",
+              "end_point": {
+                "y": 0.0375,
+                "x": -0.0375,
+                "z": 0.0
+              }
+            },
+            {
+              "start_point": {
+                "y": 0.0375,
+                "x": 0.0375,
+                "z": 0.0
+              },
+              "type": "Line3D",
+              "end_point": {
+                "y": 0.0375,
+                "x": -0.0375,
+                "z": 0.0
+              }
+            },
+            {
+              "start_point": {
+                "y": -0.0375,
+                "x": 0.0375,
+                "z": 0.0
+              },
+              "type": "Line3D",
+              "end_point": {
+                "y": 0.0375,
+                "x": 0.0375,
+                "z": 0.0
+              }
+            }
+          ],
+          "is_outer": true
+        }
+      ],
+      "extent_one": -0.001,
+      "extent_two": 0.0,
+      "group": 2
+    },
+    {
+      "transform": {
+        "origin": {
+          "y": 0.0,
+          "x": 0.0,
+          "z": 0.04
+        },
+        "y_axis": {
+          "y": 1.0,
+          "x": 0.0,
+          "z": 0.0
+        },
+        "x_axis": {
+          "y": 0.0,
+          "x": 1.0,
+          "z": 0.0
+        },
+        "z_axis": {
+          "y": 0.0,
+          "x": 0.0,
+          "z": 1.0
+        }
+      },
+      "operation": "CutFeatureOperation",
+      "extent_type": "OneSideFeatureExtentType",
+      "loops": [
+        {
+          "profile_curves": [
+            {
+              "start_point": {
+                "y": 0.0525,
+                "x": 0.0625,
+                "z": 0.0
+              },
+              "type": "Line3D",
+              "end_point": {
+                "y": 0.0525,
+                "x": -0.0625,
+                "z": 0.0
+              }
+            },
+            {
+              "start_point": {
+                "y": 0.0525,
+                "x": -0.0625,
+                "z": 0.0
+              },
+              "type": "Line3D",
+              "end_point": {
+                "y": -0.0525,
+                "x": -0.0625,
+                "z": 0.0
+              }
+            },
+            {
+              "start_point": {
+                "y": -0.0525,
+                "x": 0.0625,
+                "z": 0.0
+              },
+              "type": "Line3D",
+              "end_point": {
+                "y": -0.0525,
+                "x": -0.0625,
+                "z": 0.0
+              }
+            },
+            {
+              "start_point": {
+                "y": 0.0525,
+                "x": 0.0625,
+                "z": 0.0
+              },
+              "type": "Line3D",
+              "end_point": {
+                "y": -0.0525,
+                "x": 0.0625,
+                "z": 0.0
+              }
+            }
+          ],
+          "is_outer": true
+        }
+      ],
+      "extent_one": -0.001,
+      "extent_two": 0.0,
+      "group": 2
+    }
+  ]
+}

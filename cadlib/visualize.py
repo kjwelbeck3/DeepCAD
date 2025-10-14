@@ -6,6 +6,14 @@ from OCC.Core.GC import GC_MakeArcOfCircle
 from OCC.Extend.DataExchange import write_stl_file
 from OCC.Core.Bnd import Bnd_Box
 from OCC.Core.BRepBndLib import brepbndlib_Add
+from OCC.Core.ShapeUpgrade import ShapeUpgrade_UnifySameDomain
+# from OCC.Core.BRepTools import BRepTools_ShapeHealing
+# from OCC.Core.BRepTools impor
+
+from OCC.Core.BRep import BRep_Builder
+from OCC.Core.TopoDS import TopoDS_Compound, TopoDS_CompSolid
+from OCC.Core.ShapeFix import ShapeFix_Face, ShapeFix_FaceConnect, ShapeFix_Shape
+
 from copy import copy
 from .extrude import *
 from .sketch import Loop, Profile
@@ -15,11 +23,28 @@ import trimesh
 from trimesh.sample import sample_surface
 import random
 
+from OCC.Core.TopTools import TopTools_ListOfShape
 
 def vec2CADsolid(vec, is_numerical=True, n=256):
     cad = CADSequence.from_vector(vec, is_numerical=is_numerical, n=256)
     cad = create_CAD(cad)
     return cad
+
+def debug__create_face(cad_seq:CADSequence, idx=0):
+    extr = cad_seq.seq[idx]
+    profile = copy(extr.profile) # use copy to prevent changing extrude_op internally
+    profile.denormalize(extr.sketch_size)
+
+    sketch_plane = copy(extr.sketch_plane)
+    sketch_plane.origin = extr.sketch_pos
+
+    face = create_profile_face(profile, sketch_plane)
+    return face
+
+def debug__create_extrude(cad_seq:CADSequence, idx=0):
+    extr = cad_seq.seq[idx]
+    extr = create_by_extrude(extr)
+    return extr
 
 
 def create_CAD(cad_seq: CADSequence):
@@ -30,10 +55,33 @@ def create_CAD(cad_seq: CADSequence):
         if extrude_op.operation == EXTRUDE_OPERATIONS.index("NewBodyFeatureOperation") or \
                 extrude_op.operation == EXTRUDE_OPERATIONS.index("JoinFeatureOperation"):
             body = BRepAlgoAPI_Fuse(body, new_body).Shape()
+            # body.Build()
+            # body.SimplifyResult()
+            # body = body.Shape()
+
+            # unifier = ShapeUpgrade_UnifySameDomain(body, False, True, False)
+            # unifier.Build()
+            # body = unifier.Shape()
+            
         elif extrude_op.operation == EXTRUDE_OPERATIONS.index("CutFeatureOperation"):
             body = BRepAlgoAPI_Cut(body, new_body).Shape()
         elif extrude_op.operation == EXTRUDE_OPERATIONS.index("IntersectFeatureOperation"):
             body = BRepAlgoAPI_Common(body, new_body).Shape()
+
+    # unifier = ShapeUpgrade_UnifySameDomain(body, False, True, False)
+    # unifier.Build()
+    # body = unifier.Shape()
+
+    # healer = ShapeFix_Shape()
+    # healer.Init(body)
+    # healer.Perform()
+    # body = healer.Result()
+
+    # builder = BRep_Builder()
+    # compsolid = TopoDS_CompSolid()
+    # builder.MakeCompSolid(compsolid)
+    # builder.Add(compsolid, body)
+
     return body
 
 
@@ -46,16 +94,35 @@ def create_by_extrude(extrude_op: Extrude):
     sketch_plane.origin = extrude_op.sketch_pos
 
     face = create_profile_face(profile, sketch_plane)
+
+    # healer = ShapeFix_Face()
+    # healer.Init(face)
+    # # healer.FixSplitFace()
+    # healer.SetPrecision(1e2)
+    # healer.Perform()
+    # # print("healer.Status()")
+    # # print(healer.Status())
+    # face = healer.Result()
+    
     normal = gp_Dir(*extrude_op.sketch_plane.normal)
     ext_vec = gp_Vec(normal).Multiplied(extrude_op.extent_one)
     body = BRepPrimAPI_MakePrism(face, ext_vec).Shape()
+
     if extrude_op.extent_type == EXTENT_TYPE.index("SymmetricFeatureExtentType"):
         body_sym = BRepPrimAPI_MakePrism(face, ext_vec.Reversed()).Shape()
         body = BRepAlgoAPI_Fuse(body, body_sym).Shape()
+        # body.Build()
+        # body.SimplifyResult() 
+        # body = body.Shape()
+
     if extrude_op.extent_type == EXTENT_TYPE.index("TwoSidesFeatureExtentType"):
         ext_vec = gp_Vec(normal.Reversed()).Multiplied(extrude_op.extent_two)
         body_two = BRepPrimAPI_MakePrism(face, ext_vec).Shape()
         body = BRepAlgoAPI_Fuse(body, body_two).Shape()
+        # body.Build()
+        # body.SimplifyResult()
+        # body = body.Shape()
+
     return body
 
 
@@ -70,7 +137,29 @@ def create_profile_face(profile: Profile, sketch_plane: CoordSystem):
     topo_face = BRepBuilderAPI_MakeFace(gp_face, all_loops[0])
     for loop in all_loops[1:]:
         topo_face.Add(loop.Reversed())
+
+    topo_face.Build()
+
+    # print("topo_face.Error()")
+    # print(topo_face.Error())
+    # print("topo_face.IsDone()")
+    # print(topo_face.IsDone())
     return topo_face.Face()
+
+
+    # args = TopTools_ListOfShape()
+    # args.Append(BRepBuilderAPI_MakeFace(gp_face, all_loops[0]).Face())
+    # tools = TopTools_ListOfShape()
+    # for loop in all_loops[1:]:
+    #     tools.Append(BRepBuilderAPI_MakeFace(gp_face, loop).Face())
+
+    # topo_face = BRepAlgoAPI_Fuse()
+    # topo_face.SetArguments(args)
+    # topo_face.SetTools(tools)
+    # topo_face.Build()
+    # topo_face.SimplifyResult()
+
+    # return topo_face.Shape()
 
 
 def create_loop_3d(loop: Loop, sketch_plane: CoordSystem):
@@ -81,6 +170,7 @@ def create_loop_3d(loop: Loop, sketch_plane: CoordSystem):
         if topo_edge == -1: # omitted
             continue
         topo_wire.Add(topo_edge)
+
     return topo_wire.Wire()
 
 
