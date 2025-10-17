@@ -47,26 +47,29 @@ def debug__create_extrude(cad_seq:CADSequence, idx=0):
     return extr
 
 
-def create_CAD(cad_seq: CADSequence):
+def create_CAD(cad_seq: CADSequence, override_ops=False):
     """create a 3D CAD model from CADSequence. Only support extrude with boolean operation."""
     body = create_by_extrude(cad_seq.seq[0])
     for extrude_op in cad_seq.seq[1:]:
         new_body = create_by_extrude(extrude_op)
-        if extrude_op.operation == EXTRUDE_OPERATIONS.index("NewBodyFeatureOperation") or \
-                extrude_op.operation == EXTRUDE_OPERATIONS.index("JoinFeatureOperation"):
+        if override_ops:
             body = BRepAlgoAPI_Fuse(body, new_body).Shape()
-            # body.Build()
-            # body.SimplifyResult()
-            # body = body.Shape()
+        else:
+            if extrude_op.operation == EXTRUDE_OPERATIONS.index("NewBodyFeatureOperation") or \
+                    extrude_op.operation == EXTRUDE_OPERATIONS.index("JoinFeatureOperation"):
+                body = BRepAlgoAPI_Fuse(body, new_body).Shape()
+                # body.Build()
+                # body.SimplifyResult()
+                # body = body.Shape()
 
-            # unifier = ShapeUpgrade_UnifySameDomain(body, False, True, False)
-            # unifier.Build()
-            # body = unifier.Shape()
-            
-        elif extrude_op.operation == EXTRUDE_OPERATIONS.index("CutFeatureOperation"):
-            body = BRepAlgoAPI_Cut(body, new_body).Shape()
-        elif extrude_op.operation == EXTRUDE_OPERATIONS.index("IntersectFeatureOperation"):
-            body = BRepAlgoAPI_Common(body, new_body).Shape()
+                # unifier = ShapeUpgrade_UnifySameDomain(body, False, True, False)
+                # unifier.Build()
+                # body = unifier.Shape()
+                
+            elif extrude_op.operation == EXTRUDE_OPERATIONS.index("CutFeatureOperation"):
+                body = BRepAlgoAPI_Cut(body, new_body).Shape()
+            elif extrude_op.operation == EXTRUDE_OPERATIONS.index("IntersectFeatureOperation"):
+                body = BRepAlgoAPI_Common(body, new_body).Shape()
 
     # unifier = ShapeUpgrade_UnifySameDomain(body, False, True, False)
     # unifier.Build()
